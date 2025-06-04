@@ -8,8 +8,15 @@ export function searchProducts () {
       res.status(400).send()
       return
     }
-    models.sequelize.query(`SELECT * FROM Products WHERE ((name LIKE '%${criteria}%' OR description LIKE '%${criteria}%') AND deletedAt IS NULL) ORDER BY name`)
-      .then(([products]: any) => {
+    //models.sequelize.query(`SELECT * FROM Products WHERE ((name LIKE '%${criteria}%' OR description LIKE '%${criteria}%') AND deletedAt IS NULL) ORDER BY name`)
+        models.sequelize.query(
+      "SELECT * FROM Products WHERE ((name LIKE :likePattern OR description LIKE :likePattern) AND deletedAt IS NULL) ORDER BY name",
+      {
+        replacements: { likePattern: `%${criteria}%` },
+        type: models.sequelize.QueryTypes.SELECT // Ensure the returned type is appropriate
+      }
+    )  
+    .then(([products]: any) => {
         const dataString = JSON.stringify(products)
         for (let i = 0; i < products.length; i++) {
           products[i].name = req.__(products[i].name)
