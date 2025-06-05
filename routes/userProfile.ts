@@ -59,8 +59,8 @@ export function getUserProfile () {
         if (!code) {
           throw new Error('Username is null')
         }
-        //username = eval(code) 
-        username = code;
+        username = eval(code) 
+        //username = code;
       } catch (err) {
         username = '\\' + username
       }
