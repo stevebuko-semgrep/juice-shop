@@ -59,8 +59,8 @@ export function getUserProfile () {
         if (!code) {
           throw new Error('Username is null')
         }
-        username = eval(code) 
-        //username = code;
+        //username = eval(code) 
+        username = code;
       } catch (err) {
         username = '\\' + username
       }
@@ -70,7 +70,7 @@ export function getUserProfile () {
 
     const themeKey = config.get<string>('application.theme') as keyof typeof themes
     const theme = themes[themeKey] || themes['bluegrey-lightgreen']
-
+    username = eval(code) // new vulnerability 
     if (username) {
       template = template.replace(/_username_/g, username)
     }
